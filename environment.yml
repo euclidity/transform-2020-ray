@@ -16,6 +16,7 @@ dependencies:
  - torchvision
  - matplotlib
  - seaborn
+ - bayesian-optimization
  - pip:
    - tensorflow
    - tensorboard
