@@ -28,7 +28,9 @@ In order to be prepared I suggest:
     - make sure your local machine is setup with your access credentials [link](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
     - identify an [AWS region](https://docs.aws.amazon.com/general/latest/gr/rande.html) e.g. Ohio  where you have the ability to 
     run instances and make a note of it's code e.g. `us-east-2`
- - If you don't have an AWS account, consider setting one up. During the tutorial I aim to run a small cluster of C5.xlarge instances which are $0.19/hr so AWS cos won;t be large
+ - If you don't have an AWS account, consider setting one up.
+  - During the tutorial I aim to run a small cluster of C5.xlarge instances which are $0.19/hr so AWS cost won't be huge
+  - I'll also be demonstrating multi-GPU on an instance in the cloud, and if you have access (check your service quotas) to `p2.8xlarge` on your AWS accounts you can try that out at $7-8/hr
 
 
 ## Environment Setup
