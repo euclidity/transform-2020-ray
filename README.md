@@ -6,9 +6,19 @@ You'll just need to check back and pull the latest before the event.
 In the meantime there are a few things to read and a draft conda environment 
 that you can get setup and maybe iron out any issues ahead of time.
 
+
+
+## What you'll need
+
+This is the tutorial's maiden voyage. It was developed mostly on macos and then moved across to unbuntu with minimum fuss and has been test driven on those two platforms.
+It has not been tested in windows although it should work if you have a functioning anaconda environment.
+
+
+
 ### What to expect during the tutorial
 
-Ray and it's libraries are meant for implementing scalable ML, that means big problems, big dataset an/or big models.
+Ray and it's libraries are meant for implementing scalable ML, that means big problems, big dataset an/or big models or does it?!
+
 Ray is beautiful in that is speeds up small things too, and let's you start small and scale later with minimal code 
 change. 
 
@@ -16,13 +26,14 @@ My overall aim for the tutorial is toget people excited about Ray and what it ca
 feeling that using ray and following its patterns is a good way to start any ML project, and will give you superpowers
 as your project matures.
 
-We have got 3 hoours for the tutorial, so I have chosen small and simple problems. Logistics and limited experience
+We have got 3 hours for the tutorial, so I have chosen small and simple problems. Logistics and limited experience
 in presenting this as a tutorial means that while everyone shold be able to trun parts of this locally, some parts of 
 this, like multi-gpu training or launching remote clusters may be a matter of watching/following along.
 
 In order to be prepared I suggest:
 
- - Everyone have a go at environment setup
+ - Have a working anaconda environment, i.e. download and install [anaconda](https://www.anaconda.com/)
+ - Everyone have a go at environment setup, detailed in the next section
  - If you have a nvidia gpu on your system make sure it shows up in [nvidia-smi](https://developer.nvidia.com/nvidia-system-management-interface)
  - If you have an AWS account up and running: 
     - make sure your local machine is setup with your access credentials [link](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
@@ -30,7 +41,8 @@ In order to be prepared I suggest:
     run instances and make a note of it's code e.g. `us-east-2`
  - If you don't have an AWS account, consider setting one up.
   - During the tutorial I aim to run a small cluster of C5.xlarge instances which are $0.19/hr so AWS cost won't be huge
-  - I'll also be demonstrating multi-GPU on an instance in the cloud, and if you have access (check your service quotas) to `p2.8xlarge` on your AWS accounts you can try that out at $7-8/hr
+  - UPDATE!! when experimenting I have seen that the cluster setup time fir time around is easily 10 mins, so if may be that you want to statr this off and then jsut watch alone
+  - I'll also be demonstrating multi-GPU on an instance in the cloud, and if you have access (check your service quotas) to `p2.8xlarge` on your AWS accounts you can try that out at $7-8/hr but I'll **not** be taking people though getting jupyter up and running from an EC2 instance. So you would be on your own, maybe just sit back, watch and run for yourself later.
 
 
 ## Environment Setup
@@ -42,7 +54,7 @@ so let's try.
 Do this, this **before** setting up the conda environment
 
  1. First install Node.js either:
-    1. using nvm [link](https://gist.github.com/d2s/372b5943bce17b964a79) or 
+    1. using nvm [link](https://gist.github.com/d2s/372b5943bce17b964a79) or v14.40.0
     1. by downloading the latest version and installing manually [link](https://nodejs.org/en/download/)
     
  1. Install and build dashboard from source
