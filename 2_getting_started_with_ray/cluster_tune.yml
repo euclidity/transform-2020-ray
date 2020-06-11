@@ -1,0 +1,108 @@
+# An unique identifier for the head node and workers of this cluster.
+cluster_name: raytune
+
+# The minimum number of workers nodes to launch in addition to the head
+# node. This number should be >= 0.
+min_workers: 2    
+
+# The maximum number of workers nodes to launch in addition to the head
+# node. This takes precedence over min_workers. min_workers default to 0.
+max_workers: 8
+
+# Cloud-provider specific configuration.
+provider:
+    type: aws
+    region: us-east-2
+    # availability_zone: us-west-2b
+
+# How Ray will authenticate with newly launched nodes.
+auth:
+    ssh_user: ubuntu
+        
+# Provider-specific config for the head node, e.g. instance type. By default
+# Ray will auto-configure unspecified fields such as SubnetId and KeyName.
+# For more documentation on available fields, see:
+# http://boto3.readthedocs.io/en/latest/reference/services/ec2.html#EC2.ServiceResource.create_instances
+head_node:
+    InstanceType: c5.2xlarge
+    ImageId: ami-07c1207a9d40bc3bd  # Default Ubuntu 16.04 AMI.
+
+    # Set primary volume to 50 GiB
+    BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+              VolumeSize: 50
+        
+# Provider-specific config for worker nodes, e.g. instance type. By default
+# Ray will auto-configure unspecified fields such as SubnetId and KeyName.
+# For more documentation on available fields, see:
+# http://boto3.readthedocs.io/en/latest/reference/services/ec2.html#EC2.ServiceResource.create_instances
+worker_nodes:
+    InstanceType: c4.2xlarge
+    ImageId: ami-07c1207a9d40bc3bd  # Default Ubuntu 16.04 AMI.
+
+    # Set primary volume to 50 GiB
+    BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+              VolumeSize: 50
+
+    # Run workers on spot by default. Comment this out to use on-demand.
+#     InstanceMarketOptions:
+#         MarketType: spot
+        # Additional options can be found in the boto docs, e.g.
+        #   SpotOptions:
+        #       MaxPrice: MAX_HOURLY_PRICE
+
+    # Additional options in the boto docs.
+        
+# Files or directories to copy to the head and worker nodes. The format is a
+# dictionary from REMOTE_PATH: LOCAL_PATH, e.g.
+file_mounts: {
+    "/home/ubuntu/transform-2020-ray": "/Users/stevejpurves/dev/swung/ray_playground"
+ }
+
+# List of shell commands to run to set up nodes.
+setup_commands:
+    # Consider uncommenting these if you run into dpkg locking issues
+    # - sudo pkill -9 apt-get || true
+    # - sudo pkill -9 dpkg || true
+    # - sudo dpkg --configure -a
+    # Install basics.
+    - sudo apt-get update
+    - sudo apt-get install -y build-essential
+    - sudo apt-get install curl
+    - sudo apt-get install unzip
+    # Install Node.js in order to build the dashboard.
+    - curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash
+    - sudo apt-get install -y nodejs
+    # Install Anaconda.
+    - wget https://repo.continuum.io/archive/Anaconda3-5.0.1-Linux-x86_64.sh || true
+    - bash Anaconda3-5.0.1-Linux-x86_64.sh -b -p $HOME/anaconda3 || true
+    - echo 'export PATH="$HOME/anaconda3/bin:$PATH"' >> ~/.bashrc
+    # Build Ray.
+    - git clone https://github.com/ray-project/ray || true
+    - ray/ci/travis/install-bazel.sh
+    - cd ray/python/ray/dashboard/client; npm ci; npm run build
+    - pip install boto3==1.4.8 cython==0.29.0 aiohttp grpcio psutil setproctitle
+    - cd ray/python; pip install -e . --verbose
+
+# Custom commands that will be run on the head node after common setup.
+head_setup_commands: []
+
+# Custom commands that will be run on worker nodes after common setup.
+worker_setup_commands: []
+
+# Command to start ray on the head node. You don't need to change this.
+head_start_ray_commands:
+    - ray stop
+    - ulimit -n 65536; ray start --head --num-redis-shards=10 --port=6379 --autoscaling-config=~/ray_bootstrap_config.yaml
+
+# Command to start ray on worker nodes. You don't need to change this.
+worker_start_ray_commands:
+    - ray stop
+    - ulimit -n 65536; ray start --address=$RAY_HEAD_IP:6379        
+        
+        
+# If a node is idle for this many minutes, it will be removed.
+idle_timeout_minutes: 5

@@ -11,7 +11,7 @@ dependencies:
  - scikit-learn
  - scikit-image
  - pytest
- - cudatoolkit >= 10.0 # on a non gpu machine and having trouble installing? comment this out
+ - cudatoolkit >= 10.0
  - pytorch
  - torchvision
  - matplotlib
@@ -29,3 +29,5 @@ dependencies:
    - ray[tune]
    - xgboost
    - boto3
+   - filelock
+   - awscli
