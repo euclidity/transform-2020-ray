@@ -59,7 +59,7 @@ worker_nodes:
 # Files or directories to copy to the head and worker nodes. The format is a
 # dictionary from REMOTE_PATH: LOCAL_PATH, e.g.
 file_mounts: {
-    "/home/ubuntu/transform-2020-ray": "/Users/stevejpurves/dev/swung/ray_playground"
+    "/home/ubuntu/transform-2020-ray": "~/dev/transform-2020-ray"
  }
 
 # List of shell commands to run to set up nodes.

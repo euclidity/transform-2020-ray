@@ -8,9 +8,25 @@ max_workers: 4
 # Cloud-provider specific configuration.
 provider:
     type: aws
-    region: us-east-2
-    # availability_zone: us-west-2b
+    region: us-east-1
 
 # How Ray will authenticate with newly launched nodes.
 auth:
     ssh_user: ubuntu
+
+
+# Provider-specific config for the head node, e.g. instance type. By default
+# Ray will auto-configure unspecified fields such as SubnetId and KeyName.
+# For more documentation on available fields, see:
+# http://boto3.readthedocs.io/en/latest/reference/services/ec2.html#EC2.ServiceResource.create_instances
+head_node:
+    InstanceType: c5.2xlarge
+    ImageId: latest_dlami  # Default Ubuntu 16.04 AMI.
+
+# Provider-specific config for worker nodes, e.g. instance type. By default
+# Ray will auto-configure unspecified fields such as SubnetId and KeyName.
+# For more documentation on available fields, see:
+# http://boto3.readthedocs.io/en/latest/reference/services/ec2.html#EC2.ServiceResource.create_instances
+worker_nodes:
+    InstanceType: c5.2xlarge
+    ImageId: latest_dlami  # Default Ubuntu 16.04 AMI.
