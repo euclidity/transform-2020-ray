@@ -31,3 +31,5 @@ dependencies:
    - boto3
    - filelock
    - awscli
+   - hpbandster
+   - ConfigSpace
